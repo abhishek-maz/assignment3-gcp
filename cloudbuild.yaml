@@ -7,12 +7,12 @@ steps:
     args: ['push', 'us-central1-docker.pkg.dev/winter-2024/assignment3-repo/py-app:${COMMIT_SHA}']
 
 # Deploy the Docker container to Google Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:beta'
-    entrypoint: 'sh'
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
     args:
       - '-c'
       - |
-        gcloud beta run deploy python-app \
+        gcloud run deploy python-app \
           --image=us-central1-docker.pkg.dev/winter-2024/assignment3-repo/py-app:${COMMIT_SHA} \
           --platform=managed \
           --region=us-central1 \

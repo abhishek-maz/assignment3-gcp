@@ -7,8 +7,8 @@ steps:
     args: ['push', 'us-central1-docker.pkg.dev/winter-2024/assignment3-repo/py-app:${COMMIT_SHA}']
 
 # Deploy the Docker container to Google Cloud Run
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'sh'
     args:
       - '-c'
       - |
@@ -17,12 +17,13 @@ steps:
           --platform=managed \
           --region=us-central1 \
           --port=5000 \
-          --allow-unauthenticated \
-          --vpc-connector=projects/winter-2024/locations/us-central1/connectors/mazumdar-assign3-vpc \
-          --subnet=projects/winter-2024/regions/us-central1/subnetworks/private-subnet
+          --allow-unauthenticated
 
 options:
+  # Set defaultLogsBucketBehavior to REGIONAL_USER_OWNED_BUCKET
+  # defaultLogsBucket: 'gs://your-build-logs-bucket' # Replace with your build logs bucket
   defaultLogsBucketBehavior: 'REGIONAL_USER_OWNED_BUCKET'
  
 images:
+# Store images in Google Artifact Registry
   - us-central1-docker.pkg.dev/winter-2024/assignment3-repo/py-app:${COMMIT_SHA}
